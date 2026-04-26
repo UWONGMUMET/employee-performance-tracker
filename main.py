@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from core.config import settings
 
-from routers import auth
+from routers import auth, user
 
 app = FastAPI(
     title="Employee Performance Tracker API",
@@ -9,6 +9,7 @@ app = FastAPI(
 )
 
 app.include_router(auth.router)
+app.include_router(user.router)
 
 @app.get("/")
 def root():
