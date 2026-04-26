@@ -9,7 +9,7 @@ from core.dependencies import admin_required
 router = APIRouter(prefix="/departments", tags=["Departments"])
 
 @router.post("/", response_model=DepartmentResponse, dependencies=[Depends(admin_required)])
-def create_department(data: DepartmentCreate, db: Session = Depends(get_db)):
+def create_department_endpoint(data: DepartmentCreate, db: Session = Depends(get_db)):
     return create_department(db, data.name, data.description)
 
 @router.get("/", response_model=list[DepartmentResponse])
