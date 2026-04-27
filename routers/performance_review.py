@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from db.session import get_db
-from core.security import get_current_user, admin_required
+from core.dependencies import get_current_user, admin_required
 
 from schemas.performance_review import PerformanceReviewResponse, PerformanceReviewCreate, PerformanceReviewUpdate
 from services.performance_review_service import create_review, get_reviews, update_review, delete_review
