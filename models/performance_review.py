@@ -13,7 +13,7 @@ class PerformanceReview(Base):
     department_id = Column(String, ForeignKey("departments.id"), nullable=False)
     score = Column(Integer, nullable=False)
     feedback = Column(String, nullable=True)
-    review_period = Column(DateTime, nullable=False)
+    review_period = Column(String, nullable=False)
     status = Column(String, default="PENDING")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
