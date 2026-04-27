@@ -1,8 +1,8 @@
 """create performance reviews table
 
-Revision ID: 922a4b4baadf
+Revision ID: 6df011522a49
 Revises: 7c4dbff28f8b
-Create Date: 2026-04-27 12:04:37.995500
+Create Date: 2026-04-27 15:55:03.971406
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '922a4b4baadf'
+revision: str = '6df011522a49'
 down_revision: Union[str, Sequence[str], None] = '7c4dbff28f8b'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
