@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from db.session import get_db
-from services.dashboard_service import get_dashboard_stats
+from schemas.dashboard import DashboardSummaryResponse
+from services.dashboard_service import get_dashboard_stats, get_dashboard_summary
 from core.dependencies import admin_required
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
@@ -10,3 +11,7 @@ router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 @router.get("/", dependencies=[Depends(admin_required)])
 def dashboard(db: Session = Depends(get_db)):
     return get_dashboard_stats(db)
+
+@router.get("/summary", response_model=DashboardSummaryResponse, dependencies=[Depends(admin_required)])
+def dashboard_summary(db: Session = Depends(get_db)):
+    return get_dashboard_summary(db)
