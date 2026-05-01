@@ -8,5 +8,5 @@ class TopPerformer(BaseModel):
 class DashboardSummaryResponse(BaseModel):
     total_employees: int
     total_reviews: int
-    average_company_score: float
-    top_performers: TopPerformer | None
+    average_score: float
+    top_performer: TopPerformer | None
