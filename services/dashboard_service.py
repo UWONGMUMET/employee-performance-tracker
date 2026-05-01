@@ -70,5 +70,5 @@ def get_dashboard_summary(db: Session):
         "total_employees": total_employees,
         "total_reviews": total_reviews,
         "average_score": avg_score,
-        "top_performers": top_performer
+        "top_performer": top_performer
     }
