@@ -10,3 +10,9 @@ class DashboardSummaryResponse(BaseModel):
     total_reviews: int
     average_score: float
     top_performer: TopPerformer | None
+
+class DepartmentPerformance(BaseModel):
+    department_id: str
+    department_name: str
+    average_score: float
+    total_reviews: int
