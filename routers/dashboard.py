@@ -16,6 +16,6 @@ def dashboard(db: Session = Depends(get_db)):
 def dashboard_summary(db: Session = Depends(get_db)):
     return get_dashboard_summary(db)
 
-@router.get("/department-performance", response_model=DepartmentPerformance, dependencies=[Depends(admin_required)])
+@router.get("/department-performance", response_model=list[DepartmentPerformance], dependencies=[Depends(admin_required)])
 def department_performance(db: Session = Depends(get_db)):
     return get_department_performance(db)
