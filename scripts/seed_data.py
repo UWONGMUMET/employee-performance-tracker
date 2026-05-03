@@ -9,88 +9,79 @@ def seed():
     db = SessionLocal()
 
     # ======================
-    # DEPARTMENTS
+    # RESET 
     # ======================
-    existing_departments = db.query(Department).all()
-
-    if existing_departments:
-        print("Departments already seeded, skipping...")
-        departments = existing_departments
-    else:
-        departments = [
-            Department(name="Engineering", description="Backend & Frontend"),
-            Department(name="HR", description="Human Resources"),
-            Department(name="Marketing", description="Growth & Ads"),
-            Department(name="Finance", description="Money & Budget")
-        ]
-        db.add_all(departments)
-        db.commit()
-
-        for dept in departments:
-            db.refresh(dept)
-
-        print("Departments seeded successfully")
+    db.query(PerformanceReview).delete()
+    db.query(User).delete()
+    db.query(Department).delete()
+    db.commit()
 
     # ======================
-    # USERS
+    # DEPARTMENTS 
     # ======================
-    existing_users = db.query(User).count()
+    departments = [
+        Department(name="Engineering", description="Backend & Frontend"),
+        Department(name="HR", description="Human Resources"),
+        Department(name="Marketing", description="Growth & Ads"),
+        Department(name="Finance", description="Money & Budget")
+    ]
 
-    if existing_users == 0:
-        users = []
-        for i in range(15):
-            user = User(
-                name=f"Employee {i+1}",
-                email=f"user{i+1}@example.com",
-                password=hash_password("password123"),
-                role="EMPLOYEE"
-            )
-            users.append(user)
+    db.add_all(departments)
+    db.commit()
 
-        db.add_all(users)
-        db.commit()
+    for dept in departments:
+        db.refresh(dept)
 
-        for user in users:
-            db.refresh(user)
-
-        print("Users seeded")
-    else:
-        users = db.query(User).all()
-        print("Users already exist, skipping...")
+    print("Departments OK")
 
     # ======================
-    # REVIEWS
+    # USERS 
     # ======================
-    existing_reviews = db.query(PerformanceReview).count()
+    users = []
+    for i in range(15):
+        user = User(
+            name=f"Employee {i+1}",
+            email=f"user{i+1}@example.com",
+            password=hash_password("password123"),
+            role="EMPLOYEE"
+        )
+        users.append(user)
 
+    db.add_all(users)
+    db.commit()
+
+    for user in users:
+        db.refresh(user)
+
+    print("Users OK")
+
+    # ======================
+    # REVIEWS 
+    # ======================
     periods = ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026"]
 
-    if existing_reviews == 0:
-        for _ in range(40):
-            employee = random.choice(users)
+    for _ in range(40):
+        employee = random.choice(users)
+        reviewer = random.choice(users)
+
+        while reviewer.id == employee.id:
             reviewer = random.choice(users)
 
-            while reviewer.id == employee.id:
-                reviewer = random.choice(users)
+        review = PerformanceReview(
+            employee_id=employee.id,
+            reviewer_id=reviewer.id,
+            department_id=random.choice(departments).id,
+            score=random.randint(60, 100),
+            feedback="Auto generated review",
+            review_period=random.choice(periods),
+            status="APPROVED"
+        )
+        db.add(review)
 
-            review = PerformanceReview(
-                employee_id=employee.id,
-                reviewer_id=reviewer.id,
-                department_id=random.choice(departments).id,
-                score=random.randint(60, 100),
-                feedback="Auto generated review",
-                review_period=random.choice(periods),
-                status="APPROVED"
-            )
-            db.add(review)
-
-        db.commit()
-        print("Reviews seeded")
-    else:
-        print("Reviews already exist, skipping...")
-
+    db.commit()
     db.close()
-    print("Seed data created successfully!")
+
+    print("🔥 Seed clean & done!")
 
 if __name__ == "__main__":
     seed()
