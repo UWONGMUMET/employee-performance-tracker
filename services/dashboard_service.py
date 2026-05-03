@@ -3,6 +3,7 @@ from sqlalchemy import func
 
 from models.user import User
 from models.performance_review import PerformanceReview
+from models.department import Department
 
 def get_dashboard_stats(db: Session):
     total_users = db.query(
@@ -72,3 +73,27 @@ def get_dashboard_summary(db: Session):
         "average_score": avg_score,
         "top_performer": top_performer
     }
+
+def get_department_performance(db: Session):
+    results = db.query(
+        Department.id.label("department_id"),
+        Department.name.label("department_name"),
+        func.avg(PerformanceReview.score).label("average_score"),
+        func.count(PerformanceReview.id).label("total_reviews")
+    ).join(
+        PerformanceReview, PerformanceReview.department_id == Department.id
+    ).group_by(
+        Department.id
+    ).order_by(
+        func.avg(PerformanceReview.score).desc()
+    ).all()
+
+    return [
+        {
+            "department_id": r.department_id,
+            "department_name": r.department_name,
+            "average_score": float(r.average_score),
+            "total_reviews": r.total_reviews
+        }
+        for r in results
+    ]
